@@ -1,0 +1,19 @@
+# DocLean Git Ignore Rules
+
+# Python Virtual Environment
+backend/.venv/
+backend/__pycache__/
+backend/*.pyc
+
+# Environment Variables (Keep API Keys safe!)
+backend/.env
+
+# Node Dependencies
+frontend/node_modules/
+
+# Production builds
+frontend/dist/
+
+# Logs and system files
+*.log
+.DS_Store
