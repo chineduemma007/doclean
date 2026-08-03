@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+requests
+pypdf
+python-dotenv
