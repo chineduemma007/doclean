@@ -6,31 +6,40 @@ DocLean is an AI-powered document review system designed to make large-scale doc
 
 ---
 
-## 💡 The Core Story: Why Paritok?
+## 💡 The Core Story: Solving Two Problems for Two Audiences
 
-Modern AI agents and RAG systems have a massive bottleneck: **context bloat**. Large documents—such as pitch decks, financial reports, academic papers, and contracts—contain thousands of tokens. Sending the entire document to an LLM for every question is slow, resource-heavy, and expensive.
+Building production-ready AI document analyzers requires addressing two distinct challenges: the user experience bottleneck and the infrastructure cost bottleneck.
 
-**DocLean solves this by using Paritok as an intelligent pre-processing context compression layer.**
+### 👤 1. The User's Problem (Solved by DocLean)
+* **Who**: Students, investors, analysts, researchers, and enterprises.
+* **The Problem**: Long PDFs, manuals, and reports take too long to read. Critical insights are buried, and reading a 100-page document to find a single answer is a massive waste of time.
+* **The Solution**: **DocLean** provides a high-fidelity interface where users can upload any document, ask natural language questions, and receive accurate, structured answers instantly without reading a single page.
 
-| Scenario | ❌ Without Paritok |  With Paritok |
-| :--- | :--- | :--- |
-| **Data Payload** | Sends the entire raw document to the LLM | Sends **only** the context relevant to the user's question |
-| **Inference Cost** | High token consumption and high API bills | **90%+ fewer input tokens** (slashed costs) |
-| **Latency** | Slower responses (waiting for model to read fluff) | Faster, snappier responses |
-| **Compute Usage** | Wastes decentralized GPU resources on noise | Maximizes efficiency on decentralized compute nodes |
+### ⚙️ 2. The Builder's Problem (Solved by Paritok)
+* **Who**: DocLean developers and any company running AI document analysis at scale.
+* **The Problem**: Shipping a 100-page document context to the LLM on every user query consumes a massive number of input tokens. Because inference cost scales linearly with context size, operating costs scale unsustainably as user activity grows.
+* **The Solution**: **Paritok** functions as a cognitive context compression layer. It sits between the user's document and the LLM, analyzing the query to strip out irrelevant text, boilerplate, and noise *before* the prompt reaches the LLM. This slashes token volume, reducing inference costs by up to 90%+ with zero loss in answer quality.
 
 ---
 
 ## 🏗️ Technical Architecture & Data Pipeline
 
-DocLean acts as the orchestrator tying together high-fidelity text extraction, local metrics analysis, cognitive context compression, and decentralized model execution:
+DocLean separates the user-facing reading problem from the developer-facing infrastructure problem, leveraging Paritok and 0G Labs to scale affordably:
 
 ```mermaid
 graph TD
-    A[📄 Raw PDF / Pasted Text] -->|1. Parse via pypdf| B[⚙️ DocLean Backend]
-    B -->|2. Context & Question| C[⚡ Paritok-4B Compression API]
-    C -->|3. Filtered semantic context| D[🧠 0G Labs Decentralized Inference]
-    D -->|4. Final cleaned output| E[✨ Actionable UI Response]
+    subgraph User Experience (DocLean)
+        A[👤 User: 'I need to understand this document quickly'] -->|1. Upload Document / Ask Question| B[💻 DocLean App]
+    end
+
+    subgraph Infrastructure Efficiency (Paritok & 0G)
+        B -->|2. Large Context + Query| C[⚡ Paritok Context Compression Layer]
+        C -->|'We need to keep inference affordable'| D[⚙️ Cognitive Prompt Shrinker]
+        D -->|3. Compressed Context 90%+ Slashed| E[🧠 0G Labs Decentralized Inference]
+        E -->|4. Generate Answer| F[✨ Optimized AI Response]
+    end
+
+    F -->|5. Return accurate answer| B
 ```
 
 ### Key Technical Roles:
