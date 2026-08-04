@@ -422,44 +422,6 @@ function App() {
             </div>
           )}
 
-          {/* Response metrics and answer */}
-          {response && (
-            <div className="response-container" style={{ marginTop: '20px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '20px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(16, 185, 129, 0.15)', paddingBottom: '10px', marginBottom: '16px' }}>
-                <div className="response-header">● Optimized AI Response</div>
-                <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
-                  Latency: <strong>{response.metrics.duration}s</strong>
-                </div>
-              </div>
-              
-              <div className="response-text" style={{ marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                {renderFormattedAnswer(response.answer)}
-              </div>
-              
-              {/* Query Specific Compression Results */}
-              <div style={{ background: 'rgba(2, 6, 23, 0.4)', borderRadius: '8px', padding: '12px', border: '1px solid rgba(255,255,255,0.03)' }}>
-                <h4 style={{ fontSize: '0.8rem', color: '#cbd5e1', marginBottom: '8px' }}>⚡ Paritok Run Savings Metrics</h4>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px', fontSize: '0.75rem', textAlign: 'center' }}>
-                  <div>
-                    <div style={{ color: '#64748b' }}>Original</div>
-                    <div style={{ fontWeight: 'bold', color: '#f8fafc', marginTop: '2px' }}>{response.metrics.original_tokens} t</div>
-                  </div>
-                  <div>
-                    <div style={{ color: '#64748b' }}>Compressed</div>
-                    <div style={{ fontWeight: 'bold', color: '#06b6d4', marginTop: '2px' }}>{response.metrics.compressed_tokens} t</div>
-                  </div>
-                  <div>
-                    <div style={{ color: '#64748b' }}>Savings Ratio</div>
-                    <div style={{ fontWeight: 'bold', color: '#10b981', marginTop: '2px' }}>-{response.metrics.savings_ratio}%</div>
-                  </div>
-                  <div>
-                    <div style={{ color: '#64748b' }}>Cost Saved</div>
-                    <div style={{ fontWeight: 'bold', color: '#10b981', marginTop: '2px' }}>${response.metrics.cost_saved.toFixed(4)}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Right Panel: Chat Playground and Timeline */}
@@ -514,6 +476,47 @@ function App() {
             </div>
           )}
         </div>
+
+        {/* Full Width Optimized AI Response and Savings Metrics */}
+        {response && (
+          <div className="full-width glass-card" style={{ marginTop: '12px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(16, 185, 129, 0.15)', paddingBottom: '10px', marginBottom: '16px' }}>
+              <div className="response-header" style={{ fontSize: '1.05rem', fontWeight: 'bold', color: '#10b981', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '0.8rem' }}>●</span> OPTIMIZED AI RESPONSE
+              </div>
+              <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+                Latency: <strong>{response.metrics.duration}s</strong>
+              </div>
+            </div>
+            
+            <div className="response-text" style={{ marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.95rem' }}>
+              {renderFormattedAnswer(response.answer)}
+            </div>
+            
+            {/* Query Specific Compression Results */}
+            <div style={{ background: 'rgba(2, 6, 23, 0.4)', borderRadius: '8px', padding: '16px', border: '1px solid rgba(255,255,255,0.03)' }}>
+              <h4 style={{ fontSize: '0.85rem', color: '#cbd5e1', marginBottom: '12px' }}>⚡ Paritok Run Savings Metrics</h4>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', fontSize: '0.8rem', textAlign: 'center' }}>
+                <div>
+                  <div style={{ color: '#64748b' }}>Original</div>
+                  <div style={{ fontWeight: 'bold', color: '#f8fafc', marginTop: '4px', fontSize: '0.95rem' }}>{response.metrics.original_tokens} t</div>
+                </div>
+                <div>
+                  <div style={{ color: '#64748b' }}>Compressed</div>
+                  <div style={{ fontWeight: 'bold', color: '#06b6d4', marginTop: '4px', fontSize: '0.95rem' }}>{response.metrics.compressed_tokens} t</div>
+                </div>
+                <div>
+                  <div style={{ color: '#64748b' }}>Savings Ratio</div>
+                  <div style={{ fontWeight: 'bold', color: '#10b981', marginTop: '4px', fontSize: '0.95rem' }}>-{response.metrics.savings_ratio}%</div>
+                </div>
+                <div>
+                  <div style={{ color: '#64748b' }}>Cost Saved</div>
+                  <div style={{ fontWeight: 'bold', color: '#10b981', marginTop: '4px', fontSize: '0.95rem' }}>${response.metrics.cost_saved.toFixed(4)}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Full Width History Table */}
         <div className="full-width glass-card" style={{ marginTop: '12px' }}>
