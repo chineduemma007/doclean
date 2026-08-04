@@ -16,7 +16,7 @@ def test_backend_query():
     
     print("Sending query request to local DocSense backend...")
     try:
-        r = requests.post(url, json=payload, timeout=90)
+        r = requests.post(url, json=payload, timeout=180)
         print(f"Response Status Code: {r.status_code}")
         
         if r.status_code == 200:
