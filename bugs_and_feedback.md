@@ -15,10 +15,10 @@ This document compiles technical bugs, performance limits, and system feedback r
 
 ## 📂 Active Bug Log & Resolutions
 
-### Bug A: Paritok API Read Timeout on Large Contexts
-*   **Symptom**: Querying large documents (e.g., `10.pdf` with **9,176 tokens** / **5,276 words**) yields a **0% compression ratio** (uncompressed) in the logs.
-*   **Root Cause**: The hosted Paritok compression endpoint (`https://www.paritok.com/api/compress`) took longer than the default 20-second connection timeout limit to analyze the 9,176 tokens.
-*   **Resolution / Workaround**: Implemented a connection timeout handler in the backend (`backend/main.py`). If the Paritok API times out, the backend catches the error and automatically forwards the **original uncompressed text** to the downstream model (0G Compute) to prevent a user-facing failure.
+### Bug A: Paritok API Read Timeout (Peak Hackathon Traffic Congestion)
+*   **Symptom**: During periods of high traffic (especially close to the hackathon deadline), queries on both large contexts (e.g. 9,176 tokens) and moderate contexts (e.g. 1,812 tokens) consistently trigger **Read Timeouts** (taking longer than 30–45 seconds to compress). In the UI, this manifests as a **0% compression ratio** (uncompressed) under the metrics dashboard and session logs.
+*   **Root Cause**: The hosted Paritok compression endpoint (`https://www.paritok.com/api/compress`) queues requests, and under heavy load, the model inference execution latency exceeds standard HTTP request timeout thresholds (30–45s).
+*   **Resolution / Workaround**: DocLean backend incorporates a fallback circuit breaker. If the Paritok HTTP POST request fails or times out, the backend logs the warning, catches the error, and automatically forwards the **original uncompressed text** to 0G Compute to resolve the query. This prevents user-facing app failures, though it temporarily yields a 0% compression ratio.
 
 ---
 
