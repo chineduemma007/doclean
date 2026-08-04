@@ -2,6 +2,8 @@
 
 [![Built with Paritok](https://img.shields.io/badge/Built%20with-Paritok-1f2d3d)](https://github.com/Paritok-official/paritok-4b-v1)
 
+Built with [Paritok](https://github.com/Paritok-official/paritok-4b-v1).
+
 DocLean is an AI-powered document review system designed to make large-scale document analysis economically viable. By leveraging **Paritok's Context Compression Model** alongside **0G Labs' Decentralized Compute Network**, DocLean dynamically filters out redundant details *before* sending requests for inference, slashing costs and latency while preserving full answer quality.
 
 ---
