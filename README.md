@@ -28,15 +28,15 @@ DocLean separates the user-facing reading problem from the developer-facing infr
 
 ```mermaid
 graph TD
-    subgraph User Experience (DocLean)
-        A[👤 User: 'I need to understand this document quickly'] -->|1. Upload Document / Ask Question| B[💻 DocLean App]
+    subgraph "User Experience (DocLean)"
+        A["👤 User: 'I need to understand this document quickly'"] -->|1. Upload Document / Ask Question| B["💻 DocLean App"]
     end
 
-    subgraph Infrastructure Efficiency (Paritok & 0G)
-        B -->|2. Large Context + Query| C[⚡ Paritok Context Compression Layer]
-        C -->|'We need to keep inference affordable'| D[⚙️ Cognitive Prompt Shrinker]
-        D -->|3. Compressed Context 90%+ Slashed| E[🧠 0G Labs Decentralized Inference]
-        E -->|4. Generate Answer| F[✨ Optimized AI Response]
+    subgraph "Infrastructure Efficiency (Paritok & 0G)"
+        B -->|2. Large Context + Query| C["⚡ Paritok Context Compression Layer"]
+        C -->|'We need to keep inference affordable'| D["⚙️ Cognitive Prompt Shrinker"]
+        D -->|3. Compressed Context 90%+ Slashed| E["🧠 0G Labs Decentralized Inference"]
+        E -->|4. Generate Answer| F["✨ Optimized AI Response"]
     end
 
     F -->|5. Return accurate answer| B
