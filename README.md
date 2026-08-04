@@ -1,35 +1,67 @@
-# DocLean - Token-Efficient Context-Compressed Document AI Reviewer
+# DocLean - Token-Efficient Context-Compressed AI Document Reviewer
 
 [![Built with Paritok](https://img.shields.io/badge/Built%20with-Paritok-1f2d3d)](https://github.com/Paritok-official/paritok-4b-v1)
 
-DocLean is an AI-powered document review system that lets you paste raw text or upload any PDF, article, or brochure to analyze it instantly. 
-
-By combining **Paritok's Context Compression Model** with **0G Labs' Decentralized Compute Network**, DocLean strips away up to 95%+ of irrelevant boilerplate context *before* executing LLM inference. This slashes API token bills, optimizes latency, and increases the effective context window of decentralized node models.
-
-Built for the **Build with Paritok: The Token-Efficiency Hackathon**.
+DocLean is an AI-powered document review system designed to make large-scale document analysis economically viable. By leveraging **Paritok's Context Compression Model** alongside **0G Labs' Decentralized Compute Network**, DocLean dynamically filters out redundant details *before* sending requests for inference, slashing costs and latency while preserving full answer quality.
 
 ---
 
-## ⚡ Tech Stack & Architecture
+## 💡 The Core Story: Why Paritok?
 
-*   **Frontend**: React (Vite) styled with Vanilla CSS (Glassmorphism design system).
-*   **Backend**: FastAPI (Python) with `pypdf` for clean document text extraction.
-*   **Compression Model**: Paritok (`Paritok-4B-v1` via hosted API).
-*   **Inference Model**: 0G Labs Decentralized Network (`0GM-1.0-35B-A3B-SIA` proxy).
+Modern AI agents and RAG systems have a massive bottleneck: **context bloat**. Large documents—such as pitch decks, financial reports, academic papers, and contracts—contain thousands of tokens. Sending the entire document to an LLM for every question is slow, resource-heavy, and expensive.
+
+**DocLean solves this by using Paritok as an intelligent pre-processing context compression layer.**
+
+| Scenario | ❌ Without Paritok |  With Paritok |
+| :--- | :--- | :--- |
+| **Data Payload** | Sends the entire raw document to the LLM | Sends **only** the context relevant to the user's question |
+| **Inference Cost** | High token consumption and high API bills | **90%+ fewer input tokens** (slashed costs) |
+| **Latency** | Slower responses (waiting for model to read fluff) | Faster, snappier responses |
+| **Compute Usage** | Wastes decentralized GPU resources on noise | Maximizes efficiency on decentralized compute nodes |
 
 ---
 
-## 📏 Specifications & Optimal Limits
+## 🏗️ Technical Architecture & Data Pipeline
 
-*   **Optimal Context Size**: Up to **8,000 tokens** (~6,000 words) of text or PDF content.
-*   **High-Context Timeout Protection**: If the Paritok compression step exceeds 20 seconds (e.g. for extremely long documents), the backend automatically falls back to forwarding the uncompressed context to 0G Compute, preventing user-facing crashes.
+DocLean acts as the orchestrator tying together high-fidelity text extraction, local metrics analysis, cognitive context compression, and decentralized model execution:
+
+```mermaid
+graph TD
+    A[📄 Raw PDF / Pasted Text] -->|1. Parse via pypdf| B[⚙️ DocLean Backend]
+    B -->|2. Context & Question| C[⚡ Paritok-4B Compression API]
+    C -->|3. Filtered semantic context| D[🧠 0G Labs Decentralized Inference]
+    D -->|4. Final cleaned output| E[✨ Actionable UI Response]
+```
+
+### Key Technical Roles:
+*   **Paritok (`Paritok-4B-v1`)**: The prompt shrinker. It reads the document context, identifies the specific question asked, and strips out boilerplate text, headers, and irrelevant paragraphs, reducing token size by up to 97%.
+*   **0G Labs (`0GM-1.0-35B-A3B-SIA`)**: The inference engine. It runs the compressed context on its decentralized compute network to generate high-fidelity reasoning answers.
+*   **DocLean**: The application layer. It parses files, manages the dynamic compression diff logs, monitors token savings, and provides the visual interface.
+
+---
+
+## 🎯 Target Audience (A Universal Use Case)
+Unlike niche developer tools, DocLean provides value to anyone who receives a 100-page PDF and just wants answers:
+
+*   **🎓 Students**: Review textbooks, lecture notes, and study guides efficiently.
+*   **💼 Investors**: Analyze pitch decks, annual reports, and financial statements in seconds.
+*   **🚀 Founders**: Speed up competitor analysis, market reports, and RFP responses.
+*   **⚖️ Lawyers**: Extract clauses, terms, and conditions from long contracts.
+*   **🔬 Researchers**: Query academic publications and retrieve methodology summaries.
+*   **🤝 Recruiters & HR**: Review large batches of CVs, resumes, and employee handbooks.
+*   **📈 Sales Teams**: Cross-reference product brochures and sales documentation.
+
+---
+
+## ⚡ Specifications & Fallback Protections
+
+*   **Optimal Context Limit**: Up to **8,000 tokens** (~6,000 words) of text or PDF content.
+*   **Timeout Bypass**: If Paritok compression takes longer than 20 seconds, the backend automatically catches the timeout and forwards the uncompressed document directly to 0G Compute, guaranteeing a successful response.
+*   **Real-time Diff Tracker**: A dynamic algorithm in the backend compares the original document against the compressed output on every request, displaying the exact lines removed vs. preserved in the dashboard UI.
 
 ---
 
 ## 🚀 Setup & Execution Guide
-
-### Prerequisite
-Ensure you have Node.js (v18+) and Python (v3.9+) installed.
 
 ### 💻 1. Backend Setup (FastAPI)
 1.  Navigate to the backend directory:
@@ -51,7 +83,7 @@ Ensure you have Node.js (v18+) and Python (v3.9+) installed.
 4.  Create a `.env` file in the `backend/` folder:
     ```env
     PARITOK_API_KEY=pk_live_iqkn9k5Csp8IkEYkHim5trSXTGRQnrZb
-    0G_API_KEY=app-sk-eyJhZGRyZXNzIjoiMHgxMjc5M2NBNGY0OTVmNTI1NUM0MjMxMjhiMUVEOUNkNzFCMDgwMjNEIiwicHJvdmlkZXIiOiIweGY1NmZBYWY5OTg5YURhZkREZjI2ZmE1RmZkZDAzYTlBMjdiMzhmQUUiLCJ0aW1lc3RhbXAiOjE3ODU3NzIxMTU2NDQsImV4cGlyZXNBdCI6MCwibm9uY2UiOiI5YmIzYWU4MjU1YmI4YTRjYTNkNGQ0ODUwZDg4ZDNiNCIsImdlbmVyYXRpb24iOjAsInRva2VuSWQiOjF9fDB4MDU0YmQ4MzQzZjc4ZmMwMTM5NmEyYjdiNTVkMjE1ODAxYjUwMGMxMmZlMjY4MzFlOWZjNjBlNmI5M2MwM2IwNjJlOTU4ZDYwOTQzYjY1ZTVmYjI3ODhiMjI3NTk3M2EyNjcyM2E4YzU2YWYzNzcyZjc5MGY3NGE0Y2VhZTBhYWIxYg==
+    0G_API_KEY=your_0g_api_key
     0G_MODEL=0GM-1.0-35B-A3B-SIA
     0G_ENDPOINT=https://compute-network-29.integratenetwork.work/v1/proxy/chat/completions
     ```
@@ -59,7 +91,6 @@ Ensure you have Node.js (v18+) and Python (v3.9+) installed.
     ```bash
     python main.py
     ```
-    *(The backend will start at `http://127.0.0.1:8000`)*
 
 ### 🎨 2. Frontend Setup (React)
 1.  Navigate to the frontend directory:
@@ -70,17 +101,10 @@ Ensure you have Node.js (v18+) and Python (v3.9+) installed.
     ```bash
     npm install
     ```
-3.  Start the Vite development server:
+3.  Start the development server:
     ```bash
     npm run dev
     ```
-    *(The frontend will start at `http://localhost:5173`)*
-
----
-
-## 🛠️ Open-Source Feedback & Recommendations
-Our development log with feedback and bugs encountered regarding the Paritok API is documented here:
-*   [bugs_and_feedback.md](bugs_and_feedback.md)
 
 ---
 
