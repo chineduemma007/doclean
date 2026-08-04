@@ -505,19 +505,31 @@ function App() {
                   <div>
                     <h5 style={{ color: '#ef4444', fontSize: '0.75rem', fontWeight: 'bold', margin: '0 0 8px 0', letterSpacing: '0.05em' }}>🗑️ REMOVED (NOISE)</h5>
                     <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '0.75rem', color: '#94a3b8', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                      <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: '#ef4444' }}>✓</span> Repeated headers</li>
-                      <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: '#ef4444' }}>✓</span> Page numbers</li>
-                      <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: '#ef4444' }}>✓</span> Duplicate paragraphs</li>
-                      <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: '#ef4444' }}>✓</span> Irrelevant sections</li>
+                      {(response.filter_details?.removed || [
+                        "Repeated headers",
+                        "Page numbers",
+                        "Duplicate paragraphs",
+                        "Irrelevant sections"
+                      ]).map((item, idx) => (
+                        <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={item}>
+                          <span style={{ color: '#ef4444', flexShrink: 0 }}>✓</span> {item}
+                        </li>
+                      ))}
                     </ul>
                   </div>
                   <div>
                     <h5 style={{ color: '#10b981', fontSize: '0.75rem', fontWeight: 'bold', margin: '0 0 8px 0', letterSpacing: '0.05em' }}>💾 PRESERVED (SEMANTICS)</h5>
                     <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '0.75rem', color: '#cbd5e1', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                      <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: '#10b981' }}>✓</span> Tables & structure</li>
-                      <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: '#10b981' }}>✓</span> Financial figures</li>
-                      <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: '#10b981' }}>✓</span> Company names</li>
-                      <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: '#10b981' }}>✓</span> Section headings</li>
+                      {(response.filter_details?.preserved || [
+                        "Tables & structure",
+                        "Financial figures",
+                        "Company names",
+                        "Section headings"
+                      ]).map((item, idx) => (
+                        <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={item}>
+                          <span style={{ color: '#10b981', flexShrink: 0 }}>✓</span> {item}
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </div>

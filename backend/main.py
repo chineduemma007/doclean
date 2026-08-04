@@ -107,6 +107,81 @@ def clean_thinking_process(content: str) -> str:
         content = "[The AI model's reasoning thoughts exceeded the default token limits and got truncated. We have increased max_tokens to prevent this. Please ask your question again!]"
     return content
 
+def extract_filter_diff(original: str, compressed: str) -> dict:
+    """
+    Dynamically compares original and compressed strings to find 
+    semantic examples of what was removed vs preserved.
+    """
+    orig_lines = [l.strip() for l in original.splitlines() if l.strip()]
+    comp_lines = [l.strip() for l in compressed.splitlines() if l.strip()]
+    comp_set = set(comp_lines)
+    
+    removed_items = []
+    preserved_items = []
+    
+    # Classify removed items (distinct lines from original missing in compressed)
+    for line in orig_lines:
+        if line not in comp_set and len(line) > 12:
+            # Look for repeated headers, links, page numbers or boilerplates
+            if "page" in line.lower() or "doi" in line.lower() or "vol" in line.lower() or "http" in line.lower() or line.isupper():
+                if line not in removed_items:
+                    removed_items.append(line)
+            elif len(removed_items) < 6:
+                if line not in removed_items:
+                    removed_items.append(line)
+                    
+    # Classify preserved items (lines in compressed containing digits, headings or tables)
+    for line in comp_lines:
+        if len(line) > 12:
+            if "table" in line.lower() or "heading" in line.lower() or any(c.isdigit() for c in line) or "revenue" in line.lower() or line.startswith("#"):
+                if line not in preserved_items:
+                    preserved_items.append(line)
+            elif len(preserved_items) < 6:
+                if line not in preserved_items:
+                    preserved_items.append(line)
+                    
+    # Standard fallback tags if the document is too small to yield difference lines
+    default_removed = [
+        "Repeated headers",
+        "Page numbers",
+        "Duplicate paragraphs",
+        "Irrelevant sections"
+    ]
+    default_preserved = [
+        "Tables & structure",
+        "Financial figures",
+        "Company names",
+        "Section headings"
+    ]
+    
+    # Select best 4 distinct items and format them
+    final_removed = []
+    for item in removed_items:
+        clean_item = item.strip("-*• ").strip()
+        short = clean_item[:30] + "..." if len(clean_item) > 30 else clean_item
+        if short and short not in final_removed:
+            final_removed.append(short)
+    while len(final_removed) < 4 and len(default_removed) > 0:
+        val = default_removed.pop(0)
+        if val not in final_removed:
+            final_removed.append(val)
+            
+    final_preserved = []
+    for item in preserved_items:
+        clean_item = item.strip("-*• ").strip()
+        short = clean_item[:30] + "..." if len(clean_item) > 30 else clean_item
+        if short and short not in final_preserved:
+            final_preserved.append(short)
+    while len(final_preserved) < 4 and len(default_preserved) > 0:
+        val = default_preserved.pop(0)
+        if val not in final_preserved:
+            final_preserved.append(val)
+            
+    return {
+        "removed": final_removed[:4],
+        "preserved": final_preserved[:4]
+    }
+
 def generate_llm_answer(compressed_context: str, query: str) -> str:
     """Generates a high-quality contextual answer from the compressed document."""
     # 1. 0G Compute Support (Decentralized AI Inference)
@@ -281,9 +356,13 @@ async def query_document(req: QueryRequest):
     }
     analytics_db["history"].append(new_entry)
     
+    # 3. Dynamic Filter diff
+    filter_details = extract_filter_diff(req.document_content, comp_res["compressed"])
+    
     return {
         "answer": answer,
-        "metrics": new_entry
+        "metrics": new_entry,
+        "filter_details": filter_details
     }
 
 @app.get("/api/metrics")
