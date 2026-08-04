@@ -16,17 +16,18 @@ def test_backend_query():
     
     print("Sending query request to local DocSense backend...")
     try:
-        r = requests.post(url, json=payload, timeout=40)
+        r = requests.post(url, json=payload, timeout=90)
         print(f"Response Status Code: {r.status_code}")
         
         if r.status_code == 200:
             data = r.json()
             print("\n--- Response Data Received ---")
             print(f"Optimized Answer: {data.get('answer')}")
-            print(f"Original Tokens: {data.get('original_tokens')}")
-            print(f"Compressed Tokens: {data.get('compressed_tokens')}")
-            print(f"Savings Ratio: {data.get('savings_ratio')}%")
-            print(f"Estimated Cost Saved: ${data.get('estimated_cost_saved')}")
+            metrics = data.get('metrics', {})
+            print(f"Original Tokens: {metrics.get('original_tokens')}")
+            print(f"Compressed Tokens: {metrics.get('compressed_tokens')}")
+            print(f"Savings Ratio: {metrics.get('savings_ratio')}%")
+            print(f"Estimated Cost Saved: ${metrics.get('cost_saved')}")
             print("------------------------------")
             
             # Simple check if answer came from the mock fallback or from the live model
