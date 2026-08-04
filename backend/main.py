@@ -59,7 +59,7 @@ def compress_document(content: str, query: str) -> dict:
     original_tokens = max(1, len(content) // 4)
     
     try:
-        response = requests.post(PARITOK_URL, json=payload, headers=headers, timeout=20)
+        response = requests.post(PARITOK_URL, json=payload, headers=headers, timeout=45)
         if response.status_code == 200:
             res_data = response.json()
             compressed_content = res_data.get("compressed", content)
