@@ -1,0 +1,25 @@
+{
+  "project": "DocLean",
+  "run_timestamp": "14:32:05",
+  "document_source": "SelfDevelopmentBARSbyLevel.pdf",
+  "query": "What are the core behavioral requirements for level 4 developers?",
+  "metrics": {
+    "original_tokens": 1812,
+    "compressed_tokens": 57,
+    "savings_ratio": 96.9,
+    "cost_saved": 0.00527,
+    "duration_seconds": 12.4
+  },
+  "original_sample_lines": [
+    "Self-development BARS by Level",
+    "LEVEL 1: Standard competencies include basic programming logic and local setup.",
+    "LEVEL 2: Demonstrates capability to fix bugs independently and write simple tests.",
+    "LEVEL 3: Handles medium-sized features, collaborates with peers, and participates in code reviews.",
+    "LEVEL 4: Behaviorally Anchored Rating Scale (BARS) - Actively participates in architectural design, reviews complex subsystems, and serves as a primary point of contact for team technical issues. Regularly seeks opportunities to mentor junior developers and optimize resource usage.",
+    "LEVEL 5: Drives product strategy, designs multi-tenant scalable systems, and represents company at tech conferences."
+  ],
+  "compressed_sample_lines": [
+    "LEVEL 4: Behaviorally Anchored Rating Scale (BARS) - Actively participates in architectural design, reviews complex subsystems, and serves as a primary point of contact for team technical issues. Regularly seeks opportunities to mentor junior developers and optimize resource usage."
+  ],
+  "ai_response": "At Level 4, the core behavioral requirements (measured via BARS) center around active architectural design participation, technical leadership, and mentoring. Specifically, a Level 4 developer:\n1. **Architectural Ownership**: Reviews complex subsystems and actively shapes design layouts.\n2. **Team Focal Point**: Serves as the primary point of contact for team technical troubleshooting.\n3. **Mentorship**: Proactively seeks opportunities to guide and mentor junior engineers."
+}
