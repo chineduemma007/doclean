@@ -494,24 +494,55 @@ function App() {
             </div>
             
             {/* Query Specific Compression Results */}
-            <div style={{ background: 'rgba(2, 6, 23, 0.4)', borderRadius: '8px', padding: '16px', border: '1px solid rgba(255,255,255,0.03)' }}>
-              <h4 style={{ fontSize: '0.85rem', color: '#cbd5e1', marginBottom: '12px' }}>⚡ Paritok Run Savings Metrics</h4>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', fontSize: '0.8rem', textAlign: 'center' }}>
-                <div>
-                  <div style={{ color: '#64748b' }}>Original</div>
-                  <div style={{ fontWeight: 'bold', color: '#f8fafc', marginTop: '4px', fontSize: '0.95rem' }}>{response.metrics.original_tokens} t</div>
+            <div style={{ background: 'rgba(2, 6, 23, 0.4)', borderRadius: '8px', padding: '18px', border: '1px solid rgba(255,255,255,0.03)' }}>
+              <h4 style={{ fontSize: '0.85rem', color: '#cbd5e1', marginBottom: '16px', fontWeight: 'bold' }}>
+                ⚡ Paritok Intelligent Context Filtering
+              </h4>
+              
+              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '24px', flexWrap: 'wrap' }}>
+                {/* Left Side: Cognitive Compression Rules */}
+                <div style={{ borderRight: '1px solid rgba(255, 255, 255, 0.08)', paddingRight: '16px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                  <div>
+                    <h5 style={{ color: '#ef4444', fontSize: '0.75rem', fontWeight: 'bold', margin: '0 0 8px 0', letterSpacing: '0.05em' }}>🗑️ REMOVED (NOISE)</h5>
+                    <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '0.75rem', color: '#94a3b8', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: '#ef4444' }}>✓</span> Repeated headers</li>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: '#ef4444' }}>✓</span> Page numbers</li>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: '#ef4444' }}>✓</span> Duplicate paragraphs</li>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: '#ef4444' }}>✓</span> Irrelevant sections</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h5 style={{ color: '#10b981', fontSize: '0.75rem', fontWeight: 'bold', margin: '0 0 8px 0', letterSpacing: '0.05em' }}>💾 PRESERVED (SEMANTICS)</h5>
+                    <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '0.75rem', color: '#cbd5e1', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: '#10b981' }}>✓</span> Tables & structure</li>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: '#10b981' }}>✓</span> Financial figures</li>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: '#10b981' }}>✓</span> Company names</li>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: '#10b981' }}>✓</span> Section headings</li>
+                    </ul>
+                  </div>
                 </div>
-                <div>
-                  <div style={{ color: '#64748b' }}>Compressed</div>
-                  <div style={{ fontWeight: 'bold', color: '#06b6d4', marginTop: '4px', fontSize: '0.95rem' }}>{response.metrics.compressed_tokens} t</div>
-                </div>
-                <div>
-                  <div style={{ color: '#64748b' }}>Savings Ratio</div>
-                  <div style={{ fontWeight: 'bold', color: '#10b981', marginTop: '4px', fontSize: '0.95rem' }}>-{response.metrics.savings_ratio}%</div>
-                </div>
-                <div>
-                  <div style={{ color: '#64748b' }}>Cost Saved</div>
-                  <div style={{ fontWeight: 'bold', color: '#10b981', marginTop: '4px', fontSize: '0.95rem' }}>${response.metrics.cost_saved.toFixed(4)}</div>
+                
+                {/* Right Side: Compression Performance Metrics */}
+                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                  <h5 style={{ color: '#38bdf8', fontSize: '0.75rem', fontWeight: 'bold', margin: '0 0 12px 0', letterSpacing: '0.05em', textAlign: 'center' }}>📈 PERFORMANCE SUMMARY</h5>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px', fontSize: '0.75rem', textAlign: 'center' }}>
+                    <div>
+                      <div style={{ color: '#64748b' }}>Original</div>
+                      <div style={{ fontWeight: 'bold', color: '#f8fafc', marginTop: '4px', fontSize: '0.9rem' }}>{response.metrics.original_tokens} t</div>
+                    </div>
+                    <div>
+                      <div style={{ color: '#64748b' }}>Compressed</div>
+                      <div style={{ fontWeight: 'bold', color: '#06b6d4', marginTop: '4px', fontSize: '0.9rem' }}>{response.metrics.compressed_tokens} t</div>
+                    </div>
+                    <div>
+                      <div style={{ color: '#64748b' }}>Savings</div>
+                      <div style={{ fontWeight: 'bold', color: '#10b981', marginTop: '4px', fontSize: '0.9rem' }}>-{response.metrics.savings_ratio}%</div>
+                    </div>
+                    <div>
+                      <div style={{ color: '#64748b' }}>Cost Saved</div>
+                      <div style={{ fontWeight: 'bold', color: '#10b981', marginTop: '4px', fontSize: '0.9rem' }}>${response.metrics.cost_saved.toFixed(4)}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
