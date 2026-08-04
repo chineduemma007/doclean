@@ -6,6 +6,8 @@ const SUGGESTED_QUERIES = [
   "Identify any critical risks, limitations, or threats."
 ];
 
+const BACKEND_URL = "https://doclean-production.up.railway.app";
+
 function App() {
   // Document State
   const [documentContent, setDocumentContent] = useState('');
@@ -40,7 +42,7 @@ function App() {
 
   const fetchMetrics = async () => {
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/metrics');
+      const res = await fetch(`${BACKEND_URL}/api/metrics`);
       if (res.ok) {
         const data = await res.json();
         setMetrics(data);
@@ -63,7 +65,7 @@ function App() {
     formData.append("file", file);
 
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/upload', {
+      const res = await fetch(`${BACKEND_URL}/api/upload`, {
         method: 'POST',
         body: formData
       });
@@ -131,7 +133,7 @@ function App() {
 
     // Step 2: Call actual server query endpoint which does Paritok compress and LLM call
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/query', {
+      const res = await fetch(`${BACKEND_URL}/api/query`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
